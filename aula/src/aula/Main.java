@@ -34,7 +34,7 @@ public class Main {
 		nome_multi[0][1] = "Ratz";
 		System.out.println(nome_multi[0][1]);
 		
-		// Condições
+		// Condição IF
 		String cond = "dek";
 		if (cond == "desk") { // == >= <= !=
 			System.out.println("desk");
@@ -44,6 +44,39 @@ public class Main {
 		
 		boolean any = true;
 		if (any) System.out.println("Verdade");
+		
+		// Condição Switch e Case
+		
+		int vida = 100;
+		switch(vida)
+		{
+			
+			case 90:
+				System.out.println("vida é 90");
+			break;
+			case 30:
+				System.out.println("vida é 30");
+			break;
+			default:
+				System.out.println("vida é 100");
+			break;
+		
+		}
+		
+		// Operadores
+		String nome_jogador = "case";
+		int skill = 100;
+		
+		if((nome_jogador == "case" && skill == 100) && skill <= 90) {
+			// podemos executar esse código
+			System.out.println("verdade");
+		} else {
+			System.out.println("entramos no else");
+		}
+		
+		if (nome_jogador == "case" || nome_jogador == "lee") {
+			System.out.println("comece o jogo");
+		}
 		
 		
 		
