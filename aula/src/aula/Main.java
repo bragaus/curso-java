@@ -79,6 +79,25 @@ public class Main {
 		}
 		
 		
+		// Estruturas de repetição
+		int loopwhile = 1;
+		
+		while (loopwhile <= 10) {
+			System.out.println(loopwhile);
+			loopwhile++;
+		}
+		
+		for (int i = 1; i < 10; i++) {
+			System.out.println(i);
+		}
+		
+		
+		int loopdowhile = 1;
+		do {
+			System.out.println("número: " + loopdowhile);
+			loopdowhile++;
+		} while (loopdowhile < 10);
+		
 		
 				
 	}
