@@ -33,6 +33,21 @@ public class Main {
 		nome_multi[0][0] = "Linda Lee";
 		nome_multi[0][1] = "Ratz";
 		System.out.println(nome_multi[0][1]);
+		
+		// Condições
+		String cond = "dek";
+		if (cond == "desk") { // == >= <= !=
+			System.out.println("desk");
+		} else if (cond == "dek") {
+			System.out.println(cond);
+		}
+		
+		boolean any = true;
+		if (any) System.out.println("Verdade");
+		
+		
+		
+				
 	}
 	
 }
