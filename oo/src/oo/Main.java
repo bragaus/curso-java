@@ -1,6 +1,6 @@
 package oo;
 
-public class Main {
+public class Main extends TesteAbstract {
 
 	public static void main(String[] args) {
 		
@@ -12,7 +12,10 @@ public class Main {
 //		inimigo.iniciarInimigo();
 		
 		new Main().instanceMain2();
-		
+	}
+	
+	public void chamarAbstract() {
+		iniciarJogo();
 	}
 	
 	public void instanceMain2() {
