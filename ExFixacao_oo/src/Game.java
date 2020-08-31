@@ -5,7 +5,19 @@ public class Game {
 	private Inimigo inimigo;
 	
 	public Game() {
-		player = new Player();
+//		player = new Player();
+		
+		if(player == null) {
+			System.out.println("O player não foi inicializado");
+			player = new Tipo1();
+		}
+		
+		if(player instanceof Player) {
+			System.out.println("O player foi incializado com sucesso e faz referências a claase player");
+		} else if (player instanceof Tipo1) {
+			System.out.println("O player faz parte do Tipo1");
+		}
+		
 		inimigo = new Inimigo();
 	}
 	
