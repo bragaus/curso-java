@@ -2,8 +2,11 @@ package ooParte2;
 
 public class Player {
 	
-	public void iniciarPlayer() {
-		System.out.println("Player iniciado");
+	public int vidaInicial, tempo;
+	
+	public Player(int vidaInicial, int tempo) {
+		this.vidaInicial = vidaInicial;
+		System.out.println(this.vidaInicial);
 	}
 
 }
