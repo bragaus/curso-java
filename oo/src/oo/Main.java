@@ -26,6 +26,12 @@ package oo;
 	public void perdervida() {
 		System.out.println("Interface");
 	}
+
+	@Override
+	public void iniciar() {
+		// TODO Auto-generated method stub
+		
+	}
 	
 //	public void chamarAbstract() {
 //		iniciarJogo();
