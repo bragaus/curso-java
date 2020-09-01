@@ -1,9 +1,28 @@
 package inicio_logica;
 
+import java.util.ArrayList;
+
 public class Game implements Runnable {
 	
 	private boolean isRunning;
 	private Thread thread;
+	
+	private ArrayList<Entidade> entidades = new ArrayList<>();
+	
+	public Game() {
+		entidades.add(new Entidade());
+		entidades.add(new Entidade());
+		entidades.add(new Entidade());
+		entidades.add(new Entidade());
+		entidades.add(new Entidade());
+		entidades.add(new Entidade());
+		for(int i = 0; i < entidades.size(); i++) {
+			
+			System.out.println("Hey");
+			
+		}
+		
+	}
 	
 	public static void main(String[] args) {
 		Game game = new Game();
@@ -12,8 +31,8 @@ public class Game implements Runnable {
 	
 	public synchronized void start() {
 		isRunning = true;
-		thread = new Thread(this);
-		thread.start();
+//		thread = new Thread(this);
+//		thread.start();
 	}
 
 	public void update() {
@@ -26,7 +45,7 @@ public class Game implements Runnable {
 	
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
+		
 		while(isRunning) {
 			update();
 			render();
