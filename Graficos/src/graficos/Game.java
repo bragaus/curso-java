@@ -29,7 +29,7 @@ public class Game extends Canvas implements Runnable {
 	}
 	
 	public void iniciarFrame() {
-		frame = new JFrame();
+		frame = new JFrame("SIT");
 		frame.add(this);
 		frame.setResizable(false);
 		frame.pack();
@@ -45,7 +45,12 @@ public class Game extends Canvas implements Runnable {
 	}
 	
 	public synchronized void stop() {
-		
+		isRunning = false;
+		try {
+			thread.join();
+		} catch (InterruptedException e){
+			e.printStackTrace();
+		}
 	}
 	
 	public static void main(String[] args) {
@@ -61,15 +66,19 @@ public class Game extends Canvas implements Runnable {
 		
 		BufferStrategy bs = this.getBufferStrategy();
 		if (bs == null) {
-			this.createBufferStrategy(3);
+			this.createBufferStrategy(3); // sequência de buffers para otimizar a renderização.
 			return;
 		}
 		
 		Graphics grafico = camada.getGraphics();
 		grafico.setColor(new Color(61,26,250));
 		grafico.fillRect(0, 0, WIDTH, HEIGHT);
+		
+		grafico.setColor(Color.CYAN);
+		grafico.fillRect(0,0,159,30);
+		
 		grafico = bs.getDrawGraphics();
-		grafico.drawImage(camada, 0, 0, WIDTH*SCALE, HEIGHT*SCALE, null);
+		grafico.drawImage(camada, 0, 0, WIDTH*SCALE, HEIGHT*SCALE, null); // renderizando imagem na tela.
 		bs.show();
 
 	}
@@ -102,6 +111,8 @@ public class Game extends Canvas implements Runnable {
 				timer += 1000;
 			}
 		}
+		
+		stop();
 	}
 	
 }
