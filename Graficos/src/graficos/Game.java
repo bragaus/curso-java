@@ -1,6 +1,12 @@
 package graficos;
+
 import java.awt.Canvas;
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.image.BufferStrategy;
+import java.awt.image.BufferedImage;
+
 import javax.swing.JFrame;
 
 public class Game extends Canvas implements Runnable {
@@ -14,10 +20,12 @@ public class Game extends Canvas implements Runnable {
 	private final int HEIGHT = 120;
 	private final int SCALE = 3;
 
+	private BufferedImage camada;
 	
 	public Game() {
 		setPreferredSize(new Dimension(WIDTH*SCALE,HEIGHT*SCALE));
 		iniciarFrame();
+		camada = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB);
 	}
 	
 	public void iniciarFrame() {
@@ -51,6 +59,19 @@ public class Game extends Canvas implements Runnable {
 	
 	public void render() {
 		
+		BufferStrategy bs = this.getBufferStrategy();
+		if (bs == null) {
+			this.createBufferStrategy(3);
+			return;
+		}
+		
+		Graphics grafico = camada.getGraphics();
+		grafico.setColor(new Color(61,26,250));
+		grafico.fillRect(0, 0, WIDTH, HEIGHT);
+		grafico = bs.getDrawGraphics();
+		grafico.drawImage(camada, 0, 0, WIDTH*SCALE, HEIGHT*SCALE, null);
+		bs.show();
+
 	}
 
 	public void run() {
