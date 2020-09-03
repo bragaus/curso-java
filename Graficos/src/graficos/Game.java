@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 
@@ -26,13 +27,14 @@ public class Game extends Canvas implements Runnable {
 	private BufferedImage camada;
 	private BufferedImage player;
 	
-	private int x = 0;
-	
 	public Game() {
+		
 		sheet = new Spritesheet("/spritesheet.png");
 		player = sheet.getSprite(0, 0, 16, 16);
+		
 		setPreferredSize(new Dimension(WIDTH*SCALE,HEIGHT*SCALE));
 		iniciarFrame();
+		
 		camada = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB);
 	}
 	
@@ -67,7 +69,7 @@ public class Game extends Canvas implements Runnable {
 	}
 	
 	public void update() {
-		x++;
+
 	}
 	
 	public void render() {
@@ -82,8 +84,22 @@ public class Game extends Canvas implements Runnable {
 		grafico.setColor(new Color(61,26,250));
 		grafico.fillRect(0, 0, WIDTH, HEIGHT);
 		
+		/************* Graficos do jogo **/
 		
-		grafico.drawImage(player, x, 0, null);
+		// filtrando um método específico, isso se chama Casting no Java. 
+		Graphics2D grafico2D = (Graphics2D) grafico;	
+		
+		// +8 = metade do tamanho total do sprite, isso foi feito para posicionar o eixo de rotação no meio do sprite.
+		grafico2D.rotate(Math.toRadians(90), 90+8, 90+8); 
+		grafico.drawImage(player, 90, 90, null);
+		
+		// No rotate do Java, é necessário voltar o valor que foi setado anteriormente 
+		// para voltar ao normal e depois ser usado denovo.
+		grafico2D.rotate(Math.toRadians(-90), 90+8, 90+8); 		
+		grafico.setColor(new Color(0,0,0,100));
+		grafico.fillRect(0, 0, WIDTH, HEIGHT);			
+		
+		/*************/
 		
 		grafico.dispose(); // Limpar dados da imagem que foram usado antes.
 		
