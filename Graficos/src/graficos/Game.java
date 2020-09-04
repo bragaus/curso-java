@@ -25,13 +25,26 @@ public class Game extends Canvas implements Runnable {
 	private Spritesheet sheet;
 
 	private BufferedImage camada;
-	private BufferedImage player;
+	private BufferedImage[] player;
+	
+	private int frames = 0;
+	private int maxFrames = 20;
+	private int currentAnimation = 0, maxAnimation = 2;
 	
 	public Game() {
 		
 		sheet = new Spritesheet("/spritesheet.png");
-		player = sheet.getSprite(0, 0, 16, 16);
 		
+		player = new BufferedImage[5];
+		
+		// getSprite(x, y, width, height)
+		
+		player[0] = sheet.getSprite(1, 1, 18, 18);
+		player[1] = sheet.getSprite(21, 1, 18, 18);
+		player[2] = sheet.getSprite(41, 1, 18, 18);
+//		player[3] = sheet.getSprite(61, 1, 18, 18);
+//		player[4] = sheet.getSprite(81, 1, 18, 18);
+ 		
 		setPreferredSize(new Dimension(WIDTH*SCALE,HEIGHT*SCALE));
 		iniciarFrame();
 		
@@ -69,6 +82,19 @@ public class Game extends Canvas implements Runnable {
 	}
 	
 	public void update() {
+		
+		frames++;
+		
+		if(frames > maxFrames) {
+			
+			frames = 0;
+			currentAnimation++;
+			
+			if(currentAnimation > maxAnimation) {
+				currentAnimation = 0;
+			}
+			
+		}
 
 	}
 	
@@ -90,12 +116,12 @@ public class Game extends Canvas implements Runnable {
 		Graphics2D grafico2D = (Graphics2D) grafico;	
 		
 		// +8 = metade do tamanho total do sprite, isso foi feito para posicionar o eixo de rotação no meio do sprite.
-		grafico2D.rotate(Math.toRadians(90), 90+8, 90+8); 
-		grafico.drawImage(player, 90, 90, null);
+		// grafico2D.rotate(Math.toRadians(90), 90+8, 90+8); 
+		grafico.drawImage(player[currentAnimation], 90, 90, null);
 		
 		// No rotate do Java, é necessário voltar o valor que foi setado anteriormente 
 		// para voltar ao normal e depois ser usado denovo.
-		grafico2D.rotate(Math.toRadians(-90), 90+8, 90+8); 		
+		// grafico2D.rotate(Math.toRadians(-90), 90+8, 90+8); 		
 		grafico.setColor(new Color(0,0,0,100));
 		grafico.fillRect(0, 0, WIDTH, HEIGHT);			
 		
