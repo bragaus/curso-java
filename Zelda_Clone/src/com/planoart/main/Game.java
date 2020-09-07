@@ -17,6 +17,7 @@ import javax.swing.JFrame;
 import com.planoart.entities.Entity;
 import com.planoart.entities.Player;
 import com.planoart.graficos.Spritesheet;
+import com.planoart.world.World;
 
 public class Game extends Canvas implements Runnable, KeyListener {
 
@@ -34,6 +35,8 @@ public class Game extends Canvas implements Runnable, KeyListener {
 	public List<Entity> entities;
 	public static Spritesheet spritesheet;
 	
+	public static World world;
+	
 	public Player player;
 	
 	public Game() {
@@ -48,6 +51,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
 		entities = new ArrayList<Entity>();
 		
 		spritesheet = new Spritesheet("/Spritesheet.png");
+		world = new World("/map.png");
 		
 		player = new Player(0,0,16,16,spritesheet.getSprite(32, 0, 15, 15));
 		entities.add(player);
@@ -101,10 +105,12 @@ public class Game extends Canvas implements Runnable, KeyListener {
 		}
 		
 		Graphics grafico = camada.getGraphics();
-		grafico.setColor(new Color(61,26,250));
+		grafico.setColor(new Color(0,0,0));
 		grafico.fillRect(0, 0, WIDTH, HEIGHT);
 		
 		/************* Graficos do jogo **/
+		
+		world.render(grafico);
 		
 		for(int i = 0; i < entities.size(); i++) {
 			Entity entity = entities.get(i);
