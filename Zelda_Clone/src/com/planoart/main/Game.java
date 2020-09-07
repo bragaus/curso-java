@@ -5,12 +5,20 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JFrame;
 
-public class Game extends Canvas implements Runnable {
+import com.planoart.entities.Entity;
+import com.planoart.entities.Player;
+import com.planoart.graficos.Spritesheet;
+
+public class Game extends Canvas implements Runnable, KeyListener {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -23,12 +31,26 @@ public class Game extends Canvas implements Runnable {
 	private final int SCALE = 3;
 	private BufferedImage camada;
 	
+	public List<Entity> entities;
+	public Spritesheet spritesheet;
+	
+	public Player player;
+	
 	public Game() {
+		
+		addKeyListener(this);
 
 		setPreferredSize(new Dimension(WIDTH*SCALE,HEIGHT*SCALE));
 		iniciarFrame();
 		
+		// Inicializando objetos:
 		camada = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB);
+		entities = new ArrayList<Entity>();
+		
+		spritesheet = new Spritesheet("/spritesheet.png");
+		
+		player = new Player(0,0,16,16,spritesheet.getSprite(32, 0, 15, 15));
+		entities.add(player);
 	}
 	
 	public void iniciarFrame() {
@@ -63,7 +85,11 @@ public class Game extends Canvas implements Runnable {
 	
 	public void update() {
 		
-
+		for(int i = 0; i < entities.size(); i++) {
+			Entity entity = entities.get(i);
+			entity.update();
+		}
+	
 	}
 	
 	public void render() {
@@ -80,8 +106,13 @@ public class Game extends Canvas implements Runnable {
 		
 		/************* Graficos do jogo **/
 		
+		for(int i = 0; i < entities.size(); i++) {
+			Entity entity = entities.get(i);
+			entity.render(grafico);
+		}		
+		
 		// filtrando um método específico, isso se chama Casting no Java. 
-//		Graphics2D grafico2D = (Graphics2D) grafico;	
+		// Graphics2D grafico2D = (Graphics2D) grafico;	
 		
 		// +8 = metade do tamanho total do sprite, isso foi feito para posicionar o eixo de rotação no meio do sprite.
 		// grafico2D.rotate(Math.toRadians(90), 90+8, 90+8); 
@@ -90,8 +121,8 @@ public class Game extends Canvas implements Runnable {
 		// No rotate do Java, é necessário voltar o valor que foi setado anteriormente 
 		// para voltar ao normal e depois ser usado denovo.
 		// grafico2D.rotate(Math.toRadians(-90), 90+8, 90+8); 		
-		grafico.setColor(new Color(0,0,0,100));
-		grafico.fillRect(0, 0, WIDTH, HEIGHT);			
+		// grafico.setColor(new Color(0,0,0,100));
+		// grafico.fillRect(0, 0, WIDTH, HEIGHT);			
 		
 		/*************/
 		
@@ -137,6 +168,50 @@ public class Game extends Canvas implements Runnable {
 		}
 		
 		stop();
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		
+		// Seta direita ou D pressionado.
+		if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D) {
+			player.right = true;
+		} else if (e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A) {
+			player.left = true;
+		}
+		
+		// Seta baixo ou S pressionado.
+		if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W) {
+			player.up = true;
+		} else if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {
+			player.down = true;
+		}
+				
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+
+		// Seta direita ou D pressionado.
+		if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D) {
+			player.right = false;
+		} else if (e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A) {
+			player.left = false;
+		}
+		
+		// Seta baixo ou S pressionado.
+		if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W) {
+			player.up = false;
+		} else if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {
+			player.down = false;
+		}
+		
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }
