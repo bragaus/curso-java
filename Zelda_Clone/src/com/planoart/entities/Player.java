@@ -7,8 +7,8 @@ import com.planoart.main.Game;
 
 public class Player extends Entity	{
 	
-	private double X;
-	private double Y;
+//	private double X;
+//	private double Y;
 	
 	public boolean right, up, left, down;	
 	public double speed = 1.4;
@@ -23,7 +23,6 @@ public class Player extends Entity	{
 	
 	private boolean isBackPlayer; // Auxiliar para validar se o player parou de costas.
 
-	
 	public Player(int x, int y, int width, int height, BufferedImage sprite) {
 		super(x, y, width, height, sprite);
 		
@@ -67,13 +66,13 @@ public class Player extends Entity	{
 			
 			moved = true;
 			isBackPlayer = false;
-			setX(X+=speed);
+			setX(x+=speed);
 			
 		} else if (left) {
 			
 			moved = true;
 			isBackPlayer = false;
-			setX(X-=speed);
+			setX(x-=speed);
 			
 		}
 		
@@ -81,13 +80,13 @@ public class Player extends Entity	{
 			
 			moved = true;
 			isBackPlayer = true;
-			setY(Y-=speed);
+			setY(y-=speed);
 			
 		} else if (down) {
 			
 			moved = true;
 			isBackPlayer = false;
-			setY(Y+=speed);
+			setY(y+=speed);
 			
 		}
 		

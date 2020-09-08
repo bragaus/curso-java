@@ -3,10 +3,17 @@ package com.planoart.entities;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
+import com.planoart.main.Game;
+
 public class Entity {
 	
-	private double x;
-	private	double y;
+	public static BufferedImage LIFEPACK_EN = Game.spritesheet.getSprite(6*16, 0, 16, 16);
+	public static BufferedImage WEAPON_EN = Game.spritesheet.getSprite(7*16, 0, 16, 16);
+	public static BufferedImage BULLET_EN = Game.spritesheet.getSprite(6*16, 16, 16, 16);
+	public static BufferedImage ENEMY_EN = Game.spritesheet.getSprite(7*16, 16, 16, 16);
+	
+	protected double x;
+	protected double y;
 	private int width;
 	private int height;
 	
