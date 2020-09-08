@@ -14,50 +14,35 @@ public class World {
 	public World(String path) {
 		
 		try {
-			BufferedImage map = ImageIO.read(getClass().getResource(path));
-			
-			WIDTH = map.getWidth();
-			HEIGHT = map.getHeight();
+			BufferedImage map = ImageIO.read(getClass().getResource(path));	
 			
 			// conta para saber quantos pixels tem uma imagem: largura * altura
-			int [] pixels = new int[WIDTH * HEIGHT];
+			int [] pixels = new int[map.getWidth() * map.getHeight()];
+			
+			WIDTH = map.getWidth();
+			HEIGHT = map.getHeight();				
 			
 			tiles = new Tile[WIDTH * HEIGHT];
 			
-			map.getRGB(0, 0, WIDTH, HEIGHT, pixels, 0, WIDTH); // jogar os pixels da imagem dentro do array map.
+			map.getRGB(0, 0,WIDTH, HEIGHT, pixels, 0, WIDTH); // jogar os pixels da imagem dentro do array map.
 			
-			// Percorrendo o mapa
-			for (int x = 0; x < WIDTH; x++) {
+			for (int xx = 0; xx < WIDTH; xx++) {
 				
-				for (int y = 0; y < HEIGHT; y++) {
+				for (int yy = 0; yy < HEIGHT; yy++) {
 					
-					int pixelAtual = pixels[x + (y * WIDTH)];
+					int pixelAtual = pixels[xx + (yy * WIDTH)];
 					
-					switch(pixelAtual) {
+					switch (pixelAtual) {
 					
-					case 0xFF000000: // chão
-						tiles[x + (y * WIDTH)] = new FloorTile(x*16, y*16, Tile.TILE_WALL);
+					// Parede
+					case 0xFFFFFFFF: tiles[xx + (yy * WIDTH)] = new FloorTile(xx*16,yy*16,Tile.TILE_WALL);
+						break;
+					
+					// Parede, Player e default.
+					case 0xFF000000: case 0xFF002EFF: default:
+						tiles[xx + (yy * WIDTH)] = new FloorTile(xx*16,yy*16,Tile.TILE_FLOOR);
 						break;
 						
-					case 0xFFFFFFFF:  // parede
-						tiles[x + (y * WIDTH)] = new FloorTile(x*16, y*16, Tile.TILE_FLOOR);
-						break;
-						
-//					case 0xFFFF0000:
-//						System.out.println("Vermelho");
-//						break;
-//						
-//					case 0xFFFFE500:
-//						System.out.println("Amarelo");
-//						break;
-						
-//					case 0xFF002EFF:
-//						System.out.println("player");
-//						break;
-						
-//					default:
-//						// chão
-					
 					}
 					
 				}
@@ -69,14 +54,14 @@ public class World {
 		}
 	}
 	
-	public void render(Graphics grafico) {
+	public void render(Graphics graficos) {
 		
-		for (int x = 0; x < WIDTH; x++) {
+		for (int xx = 0; xx < WIDTH; xx++) {
 			
-			for (int y = 0; y < HEIGHT; y++) {
+			for (int yy = 0; yy < HEIGHT; yy++) {
 				
-				Tile tile = tiles[x + (y*WIDTH)];
-				tile.render(grafico);
+				Tile tile = tiles[xx + (yy * WIDTH)];
+				tile.render(graficos);
 				
 			}
 			
