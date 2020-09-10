@@ -64,13 +64,15 @@ public class Player extends Entity	{
 		
 		moved = false;
 		
-		if (right) {
+		// World.isFree((int)(x + speed), this.getY()) verificando colisão
+		
+		if (right && World.isFree((int)(x + speed), this.getY()) ) {
 			
 			moved = true;
 			isBackPlayer = false;
 			setX(x+=speed);
 			
-		} else if (left) {
+		} else if (left && World.isFree((int)(x - speed), this.getY()) ) {
 			
 			moved = true;
 			isBackPlayer = false;
@@ -78,13 +80,13 @@ public class Player extends Entity	{
 			
 		}
 		
-		if (up) {
+		if (up && World.isFree(this.getX(), (int)(y - speed)) ) {
 			
 			moved = true;
 			isBackPlayer = true;
 			setY(y-=speed);
 			
-		} else if (down) {
+		} else if (down && World.isFree(this.getX(), (int)(y + speed)) ) {
 			
 			moved = true;
 			isBackPlayer = false;

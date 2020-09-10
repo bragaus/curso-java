@@ -15,8 +15,9 @@ import com.planoart.main.Game;
 
 public class World {
 
-	private Tile[] tiles;
+	public static Tile[] tiles;
 	public static int WIDTH, HEIGHT;
+	public static final int TILE_SIZE = 16;
 	
 	public World(String path) {
 		
@@ -39,32 +40,12 @@ public class World {
 					
 					int pixelAtual = pixels[xx + (yy * WIDTH)];
 					
-//					if (pixelAtual == 0xFF002EFF) {
-//						Game.player.setX(xx*16); 
-//						Game.player.setY(yy*16);
-//					}			
-					
-//					
-//					if (pixelAtual == 0xFFFFFFFF) {
-//						 tiles[xx + (yy * WIDTH)] = new FloorTile(xx*16,yy*16,Tile.TILE_WALL);
-//					} else if (pixelAtual == 0xFFFF0094) {
-//						Game.entities.add(new Lifepack(xx*16,yy*16,16,16,Entity.LIFEPACK_EN));
-//					} else if (pixelAtual == 0xFFFFE500) {
-//						Game.entities.add(new Bullet(xx*16,yy*16,16,16,Entity.BULLET_EN));
-//					} else if (pixelAtual == 0xFFFF8E00) {
-//						Game.entities.add(new Weapon(xx*16,yy*16,16,16,Entity.WEAPON_EN));
-//					} else if (pixelAtual == 0xFFFF0000) {
-//						Game.entities.add(new Enemy(xx*16,yy*16,16,16,Entity.ENEMY_EN));
-//					} else if (pixelAtual == 0xFF000000) {
-//						tiles[xx + (yy * WIDTH)] = new FloorTile(xx*16,yy*16,Tile.TILE_FLOOR);
-//					}
-					
 					tiles[xx + (yy * WIDTH)] = new FloorTile(xx*16,yy*16,Tile.TILE_FLOOR);
 					
 					switch (pixelAtual) {
 					
 					// Parede
-					case 0xFFFFFFFF: tiles[xx + (yy * WIDTH)] = new FloorTile(xx*16,yy*16,Tile.TILE_WALL);
+					case 0xFFFFFFFF: tiles[xx + (yy * WIDTH)] = new WallTile(xx*16,yy*16,Tile.TILE_WALL);
 						break;
 						
 					// Parede
@@ -101,6 +82,30 @@ public class World {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	// Sistema de colisão
+	public static boolean isFree(int xnext, int ynext) {
+		
+		int x1 = xnext / TILE_SIZE;
+		int y1 = ynext / TILE_SIZE;
+		
+		int x2 = (xnext+TILE_SIZE-1) / TILE_SIZE;
+		int y2 = ynext / TILE_SIZE;
+		
+		int x3 = xnext / TILE_SIZE;
+		int y3 = (ynext+TILE_SIZE-1) / TILE_SIZE;
+		
+		int x4 = (xnext+TILE_SIZE-1) / TILE_SIZE;
+		int y4 = (ynext+TILE_SIZE-1) / TILE_SIZE;
+		
+		return !(
+			tiles[x1 + (y1 * World.WIDTH)] instanceof WallTile ||
+			tiles[x2 + (y2 * World.WIDTH)] instanceof WallTile ||
+			tiles[x3 + (y3 * World.WIDTH)] instanceof WallTile ||
+			tiles[x4 + (y4 * World.WIDTH)] instanceof WallTile
+		);
+		
 	}
 	
 	public void render(Graphics graficos) {
