@@ -153,6 +153,8 @@ public class Game extends Canvas implements Runnable, KeyListener {
 		int frames = 0;
 		double timer = System.currentTimeMillis(); // Tempo atual do computador em um formato menos preciso.
 		
+		requestFocus();
+		
 		while(isRunning) {
 			
 			long now = System.nanoTime();
