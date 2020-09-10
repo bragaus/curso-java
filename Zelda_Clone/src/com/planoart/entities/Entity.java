@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 import com.planoart.main.Game;
+import com.planoart.world.Camera;
 
 public class Entity {
 	
@@ -60,7 +61,7 @@ public class Entity {
 	}
 	
 	public void render(Graphics graficos) {
-		graficos.drawImage(this.getSpritesheet(), this.getX(), this.getY(), null);
+		graficos.drawImage(this.getSpritesheet(), this.getX() - Camera.x, this.getY() - Camera.y, null);
 	}
 	
 

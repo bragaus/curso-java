@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 import com.planoart.main.Game;
+import com.planoart.world.Camera;
 
 public class Player extends Entity	{
 	
@@ -99,26 +100,33 @@ public class Player extends Entity	{
 				if (index == maxIndex) index = 0;
 			}
 		}
+		
+		Camera.x = this.getX() - (Game.WIDTH/2);
+		Camera.y = this.getY() - (Game.HEIGHT/2);
+		
 	}
 	
 	public void render(Graphics graficos) {
 		
+		int posicaoX = this.getX() - Camera.x;
+		int posicaoY = this.getY() - Camera.y;
+		
 		if (right) {
-			graficos.drawImage(rightPlayer[index], this.getX(), this.getY(), null);
+			graficos.drawImage(rightPlayer[index], posicaoX, posicaoY, null);
 		} else  if (left) {
-			graficos.drawImage(leftPlayer[index], this.getX(), this.getY(), null);
+			graficos.drawImage(leftPlayer[index], posicaoX, posicaoY, null);
 		} else {
-			graficos.drawImage(frontPlayer[0], this.getX(), this.getY(), null);
+			graficos.drawImage(frontPlayer[0], posicaoX, posicaoY, null);
 		}
 
 		if (up) {
-			graficos.drawImage(backPlayer[0], this.getX(), this.getY(), null);
+			graficos.drawImage(backPlayer[0], posicaoX, posicaoY, null);
 		} else if (isBackPlayer) {
-			graficos.drawImage(backPlayer[0], this.getX(), this.getY(), null);
+			graficos.drawImage(backPlayer[0], posicaoX, posicaoY, null);
 		}
 		
 		if (down) {
-			graficos.drawImage(frontPlayer[0], this.getX(), this.getY(), null);
+			graficos.drawImage(frontPlayer[0], posicaoX, posicaoY, null);
 		}
 		
 	}

@@ -20,7 +20,7 @@ public class Tile {
 	}
 	
 	public void render(Graphics grafico) {
-		grafico.drawImage(sprite, x, y, null);
+		grafico.drawImage(sprite, x - Camera.x, y - Camera.y, null);
 	}
 	
 }
