@@ -65,7 +65,10 @@ public class World {
 						break;
 						
 					// Inimigo
-					case 0xFFFF0000: Game.entities.add(new Enemy(xx*16,yy*16,16,16,Entity.ENEMY_EN));
+					case 0xFFFF0000: 
+						Enemy en = new Enemy(xx*16,yy*16,16,16,Entity.ENEMY_EN);
+						Game.entities.add(en);
+						Game.enemies.add(en);
 						break;
 						
 					// Chão

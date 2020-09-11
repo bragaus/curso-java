@@ -11,9 +11,11 @@ import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import javax.swing.JFrame;
 
+import com.planoart.entities.Enemy;
 import com.planoart.entities.Entity;
 import com.planoart.entities.Player;
 import com.planoart.graficos.Spritesheet;
@@ -33,13 +35,18 @@ public class Game extends Canvas implements Runnable, KeyListener {
 	private BufferedImage camada;
 	
 	public static List<Entity> entities;
+	public static List<Enemy> enemies;
 	public static Spritesheet spritesheet;
 	
 	public static World world;
 	
 	public static Player player;
 	
+	public static Random rand;
+	
 	public Game() {
+		
+		rand = new Random();
 		
 		addKeyListener(this);
 
@@ -49,6 +56,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
 		// Inicializando objetos:
 		camada = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB);
 		entities = new ArrayList<Entity>();
+		enemies = new ArrayList<Enemy>();
 		
 		spritesheet = new Spritesheet("/Spritesheet.png");
 		player = new Player(0,0,16,16,spritesheet.getSprite(32, 0, 15, 15));
