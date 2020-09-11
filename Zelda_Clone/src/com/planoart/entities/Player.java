@@ -23,6 +23,8 @@ public class Player extends Entity	{
 	private BufferedImage[] backPlayer;
 	private BufferedImage[] frontPlayer;
 	
+	public int life = 100;
+	
 	private boolean isBackPlayer; // Auxiliar para validar se o player parou de costas.
 
 	public Player(int x, int y, int width, int height, BufferedImage sprite) {
