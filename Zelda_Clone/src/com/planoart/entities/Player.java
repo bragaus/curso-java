@@ -2,7 +2,9 @@ package com.planoart.entities;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
+import com.planoart.graficos.Spritesheet;
 import com.planoart.main.Game;
 import com.planoart.world.Camera;
 import com.planoart.world.World;
@@ -20,9 +22,14 @@ public class Player extends Entity	{
 	private BufferedImage[] backPlayer;
 	private BufferedImage[] frontPlayer;
 	
+	private BufferedImage playerDamage;
+	
 	public static int ammo = 0;
 	
-	public static double life = 100, maxLife = 100;
+	public static boolean IsDamaged = false;
+	private int damageFrames = 0;
+	
+	public double life = 100, maxLife = 100;
 	
 	private boolean isBackPlayer; // Auxiliar para validar se o player parou de costas.
 
@@ -33,6 +40,8 @@ public class Player extends Entity	{
 		leftPlayer = new BufferedImage[4];
 		backPlayer = new BufferedImage[1];
 		frontPlayer = new BufferedImage[1];
+		
+		playerDamage = Game.spritesheet.getSprite(0, 30, 14, 15);
 
 		for(int i = 0; i < backPlayer.length; i++) {
 			
@@ -108,6 +117,31 @@ public class Player extends Entity	{
 		checkCollisionLifePack();
 		checkCollisionAmmo();
 		
+		// animação para piscar quando der dano.
+		if (IsDamaged) {
+			
+			this.damageFrames++;
+			if (this.damageFrames == 8) {
+				this.damageFrames = 0;
+				IsDamaged = false;
+			}
+			
+		}
+		
+		if (life <= 0) {
+			
+			Game.entities = new ArrayList<Entity>();
+			Game.enemies = new ArrayList<Enemy>();
+			
+			Game.spritesheet = new Spritesheet("/Spritesheet.png");
+			Game.player = new Player(0,0,16,16,Game.spritesheet.getSprite(32, 0, 15, 15));
+			Game.entities.add(Game.player);
+			Game.world = new World("/map.png");
+			
+			return;
+			
+		}
+		
 		// travar a camera no limite do mapa.
 		Camera.x = Camera.clamp(this.getX() - (Game.WIDTH/2), 0, World.WIDTH*16 - Game.WIDTH);
 		Camera.y = Camera.clamp(this.getY() - (Game.HEIGHT/2), 0, World.HEIGHT*16 - Game.HEIGHT);
@@ -160,22 +194,30 @@ public class Player extends Entity	{
 		int posicaoX = this.getX() - Camera.x;
 		int posicaoY = this.getY() - Camera.y;
 		
-		if (right) {
-			graficos.drawImage(rightPlayer[index], posicaoX, posicaoY, null);
-		} else  if (left) {
-			graficos.drawImage(leftPlayer[index], posicaoX, posicaoY, null);
-		} else {
-			graficos.drawImage(frontPlayer[0], posicaoX, posicaoY, null);
-		}
+		if (!IsDamaged) {
+			
+			if (right) {
+				graficos.drawImage(rightPlayer[index], posicaoX, posicaoY, null);
+			} else  if (left) {
+				graficos.drawImage(leftPlayer[index], posicaoX, posicaoY, null);
+			} else {
+				graficos.drawImage(frontPlayer[0], posicaoX, posicaoY, null);
+			}
 
-		if (up) {
-			graficos.drawImage(backPlayer[0], posicaoX, posicaoY, null);
-		} else if (isBackPlayer) {
-			graficos.drawImage(backPlayer[0], posicaoX, posicaoY, null);
-		}
-		
-		if (down) {
-			graficos.drawImage(frontPlayer[0], posicaoX, posicaoY, null);
+			if (up) {
+				graficos.drawImage(backPlayer[0], posicaoX, posicaoY, null);
+			} else if (isBackPlayer) {
+				graficos.drawImage(backPlayer[0], posicaoX, posicaoY, null);
+			}
+			
+			if (down) {
+				graficos.drawImage(frontPlayer[0], posicaoX, posicaoY, null);
+			}			
+			
+		} else {
+			
+			graficos.drawImage(playerDamage, posicaoX, posicaoY, null);
+			
 		}
 		
 	}

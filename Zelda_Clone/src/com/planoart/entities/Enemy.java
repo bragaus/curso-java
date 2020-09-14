@@ -78,7 +78,8 @@ public class Enemy extends Entity {
 			
 			if (Game.rand.nextInt(100) < 10) { // 10%
 				
-				Player.life-=Game.rand.nextInt(3);
+				Player.life -= Game.rand.nextInt(3);
+				Player.IsDamaged = true;
 				
 				System.out.println("Vida: " + Player.life);
 				
