@@ -9,9 +9,6 @@ import com.planoart.world.World;
 
 public class Player extends Entity	{
 	
-//	private double X;
-//	private double Y;
-	
 	public boolean right, up, left, down;	
 	public double speed = 1.4;
 
@@ -23,7 +20,7 @@ public class Player extends Entity	{
 	private BufferedImage[] backPlayer;
 	private BufferedImage[] frontPlayer;
 	
-	public int life = 100;
+	public static double life = 100, maxLife = 100;
 	
 	private boolean isBackPlayer; // Auxiliar para validar se o player parou de costas.
 
@@ -106,9 +103,31 @@ public class Player extends Entity	{
 			}
 		}
 		
+		this.checkCollisionLifePack();
+		
 		// travar a camera no limite do mapa.
 		Camera.x = Camera.clamp(this.getX() - (Game.WIDTH/2), 0, World.WIDTH*16 - Game.WIDTH);
 		Camera.y = Camera.clamp(this.getY() - (Game.HEIGHT/2), 0, World.HEIGHT*16 - Game.HEIGHT);
+		
+	}
+	
+	public void checkCollisionLifePack() {
+		
+		for (int i = 0; i < Game.entities.size(); i++) {
+			
+			Entity objetoAtual = Game.entities.get(i);
+			
+			if (objetoAtual instanceof Lifepack) {
+				
+				if (Entity.isColliding(this, objetoAtual)) {
+					life += 8;
+					if (life > 100) life = 100;
+					Game.entities.remove(i);
+					return;
+				}
+			}
+			
+		}
 		
 	}
 	

@@ -53,7 +53,10 @@ public class World {
 						break;
 					
 					// Vida
-					case 0xFFFF0094: Game.entities.add(new Lifepack(xx*16,yy*16,16,16,Entity.LIFEPACK_EN));
+					case 0xFFFF0094: 
+						Lifepack pack = new Lifepack(xx*16,yy*16,16,16,Entity.LIFEPACK_EN);
+						// pack.setMask(1, 1, 8, 1);
+						Game.entities.add(pack);
 						break;
 					
 					// Munição

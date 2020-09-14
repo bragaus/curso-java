@@ -1,6 +1,8 @@
 package com.planoart.entities;
 
+import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import com.planoart.main.Game;
@@ -18,6 +20,8 @@ public class Entity {
 	private int width;
 	private int height;
 	
+	private int maskx, masky, minwidth, minheight;
+	
 	private BufferedImage sprite;
 	
 	public Entity(int x, int y, int width, int height, BufferedImage sprite) {
@@ -26,6 +30,20 @@ public class Entity {
 		this.width = width;
 		this.height = height;
 		this.sprite = sprite;
+		
+		this.maskx = 0;
+		this.masky = 0;
+		this.minwidth = width;
+		this.minheight = height;
+	}
+	
+	public void setMask(int maskx, int masky, int minwidth, int minheight) {
+		
+		this.maskx = maskx;
+		this.masky = masky;
+		this.minwidth = minwidth;
+		this.minheight = minheight;
+		
 	}
 	
 	public void setX(double newX) {
@@ -60,8 +78,19 @@ public class Entity {
 		
 	}
 	
+	public static boolean isColliding(Entity e1, Entity e2) {
+		
+		Rectangle e1Mask = new Rectangle(e1.getX() + e1.maskx, e1.getY() + e1.masky, e1.minwidth, e1.minheight);
+		Rectangle e2Mask = new Rectangle(e2.getX() + e2.maskx, e2.getY() + e2.masky, e2.minwidth, e2.minheight);
+		
+		return e1Mask.intersects(e2Mask);
+		
+	}
+	
 	public void render(Graphics graficos) {
 		graficos.drawImage(this.getSpritesheet(), this.getX() - Camera.x, this.getY() - Camera.y, null);
+		//graficos.setColor(Color.red);
+		//graficos.fillRect(this.getX() + maskx - Camera.x, this.getY() + masky - Camera.y, minwidth, height);
 	}
 	
 

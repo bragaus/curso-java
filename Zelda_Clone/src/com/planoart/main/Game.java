@@ -19,6 +19,7 @@ import com.planoart.entities.Enemy;
 import com.planoart.entities.Entity;
 import com.planoart.entities.Player;
 import com.planoart.graficos.Spritesheet;
+import com.planoart.graficos.UserInterface;
 import com.planoart.world.World;
 
 public class Game extends Canvas implements Runnable, KeyListener {
@@ -44,6 +45,8 @@ public class Game extends Canvas implements Runnable, KeyListener {
 	
 	public static Random rand;
 	
+	public UserInterface userInterface;
+	
 	public Game() {
 		
 		rand = new Random();
@@ -54,6 +57,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
 		iniciarFrame();
 		
 		// Inicializando objetos:
+		userInterface = new UserInterface();
 		camada = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB);
 		entities = new ArrayList<Entity>();
 		enemies = new ArrayList<Enemy>();
@@ -112,18 +116,20 @@ public class Game extends Canvas implements Runnable, KeyListener {
 			return;
 		}
 		
-		Graphics grafico = camada.getGraphics();
-		grafico.setColor(new Color(0,0,0));
-		grafico.fillRect(0, 0, WIDTH, HEIGHT);
+		Graphics graficos = camada.getGraphics();
+		graficos.setColor(new Color(0,0,0));
+		graficos.fillRect(0, 0, WIDTH, HEIGHT);
 		
 		/************* Graficos do jogo **/
 		
-		world.render(grafico);
+		world.render(graficos);
 		
 		for(int i = 0; i < entities.size(); i++) {
 			Entity entity = entities.get(i);
-			entity.render(grafico);
+			entity.render(graficos);
 		}		
+		
+		userInterface.render(graficos);
 		
 		// filtrando um método específico, isso se chama Casting no Java. 
 		// Graphics2D grafico2D = (Graphics2D) grafico;	
@@ -140,14 +146,14 @@ public class Game extends Canvas implements Runnable, KeyListener {
 		
 		/*************/
 		
-		grafico.dispose(); // Limpar dados da imagem que foram usado antes.
+		graficos.dispose(); // Limpar dados da imagem que foram usado antes.
 		
-		grafico.setFont(new Font("Arial", Font.BOLD, 20));
-		grafico.setColor(Color.white);
-		grafico.drawString("SIT", 19, 19);
+		graficos.setFont(new Font("Arial", Font.BOLD, 20));
+		graficos.setColor(Color.white);
+		graficos.drawString("SIT", 19, 19);
 		
-		grafico = bs.getDrawGraphics();
-		grafico.drawImage(camada, 0, 0, WIDTH*SCALE, HEIGHT*SCALE, null); // renderizando imagem na tela.
+		graficos = bs.getDrawGraphics();
+		graficos.drawImage(camada, 0, 0, WIDTH*SCALE, HEIGHT*SCALE, null); // renderizando imagem na tela.
 		bs.show();
 
 	}
@@ -186,7 +192,6 @@ public class Game extends Canvas implements Runnable, KeyListener {
 		stop();
 	}
 
-	@Override
 	public void keyPressed(KeyEvent e) {
 		
 		// Seta direita ou D pressionado.
@@ -205,7 +210,6 @@ public class Game extends Canvas implements Runnable, KeyListener {
 				
 	}
 
-	@Override
 	public void keyReleased(KeyEvent e) {
 
 		// Seta direita ou D pressionado.
@@ -224,7 +228,6 @@ public class Game extends Canvas implements Runnable, KeyListener {
 		
 	}
 
-	@Override
 	public void keyTyped(KeyEvent e) {
 		// TODO Auto-generated method stub
 		
