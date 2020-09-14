@@ -9,6 +9,8 @@ import com.planoart.entities.Player;
 public class UserInterface {
 
 	public void render(Graphics graficos) {
+		
+		// Vida
 		graficos.setColor(Color.red);
 		graficos.fillRect(2, 3, 50, 10);		
 		
@@ -18,6 +20,11 @@ public class UserInterface {
 		graficos.setColor(Color.white);
 		graficos.setFont(new Font("arial", Font.BOLD, 9));
 		graficos.drawString((int)Player.life+"/"+(int)Player.maxLife, 3, 11);
+		
+		// Munição
+		graficos.setColor(Color.white);
+		graficos.setFont(new Font("arial", Font.BOLD, 9));
+		graficos.drawString("AMMO: " + Player.ammo, 3, 21);		
 	}
 	
 }

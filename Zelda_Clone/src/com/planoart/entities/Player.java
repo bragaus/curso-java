@@ -20,6 +20,8 @@ public class Player extends Entity	{
 	private BufferedImage[] backPlayer;
 	private BufferedImage[] frontPlayer;
 	
+	public static int ammo = 0;
+	
 	public static double life = 100, maxLife = 100;
 	
 	private boolean isBackPlayer; // Auxiliar para validar se o player parou de costas.
@@ -103,11 +105,33 @@ public class Player extends Entity	{
 			}
 		}
 		
-		this.checkCollisionLifePack();
+		checkCollisionLifePack();
+		checkCollisionAmmo();
 		
 		// travar a camera no limite do mapa.
 		Camera.x = Camera.clamp(this.getX() - (Game.WIDTH/2), 0, World.WIDTH*16 - Game.WIDTH);
 		Camera.y = Camera.clamp(this.getY() - (Game.HEIGHT/2), 0, World.HEIGHT*16 - Game.HEIGHT);
+		
+	}
+	
+	public void checkCollisionAmmo() {
+		
+		for (int i = 0; i < Game.entities.size(); i++) {
+			
+			Entity objetoAtual = Game.entities.get(i);
+			
+			if (objetoAtual instanceof Bullet) {
+				
+				if (Entity.isColliding(this, objetoAtual)) {
+					ammo++;
+					Game.entities.remove(i);
+					// System.out.println("Munição atual: " + ammo);
+					return;
+				}
+			}
+			
+		}
+				
 		
 	}
 	

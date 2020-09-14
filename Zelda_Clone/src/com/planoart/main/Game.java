@@ -152,8 +152,10 @@ public class Game extends Canvas implements Runnable, KeyListener {
 		graficos.setColor(Color.white);
 		graficos.drawString("SIT", 19, 19);
 		
+	
+		
 		graficos = bs.getDrawGraphics();
-		graficos.drawImage(camada, 0, 0, WIDTH*SCALE, HEIGHT*SCALE, null); // renderizando imagem na tela.
+		graficos.drawImage(camada, 0, 0, WIDTH*SCALE, HEIGHT*SCALE, null); // renderizando imagem na tela.			
 		bs.show();
 
 	}
