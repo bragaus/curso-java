@@ -17,16 +17,22 @@ public class Player extends Entity	{
 	private int frames = 0, maxFrames = 5, index = 0, maxIndex = 3;
 	private boolean moved;
 	
+	// Player
 	private BufferedImage[] rightPlayer;
 	private BufferedImage[] leftPlayer;
 	private BufferedImage[] backPlayer;
 	private BufferedImage[] frontPlayer;
 	
-	private BufferedImage playerDamage;
+	// Player com dano
+	private BufferedImage playerDamage; 
+	
+	private BufferedImage[] weapon;
+	
+	public static boolean IsDamaged = false;
+	private boolean hasGun = false;
 	
 	public static int ammo = 0;
 	
-	public static boolean IsDamaged = false;
 	private int damageFrames = 0;
 	
 	public double life = 100, maxLife = 100;
@@ -40,8 +46,12 @@ public class Player extends Entity	{
 		leftPlayer = new BufferedImage[4];
 		backPlayer = new BufferedImage[1];
 		frontPlayer = new BufferedImage[1];
+		weapon = new BufferedImage[2];
 		
 		playerDamage = Game.spritesheet.getSprite(0, 30, 14, 15);
+		
+		weapon[0] = Game.spritesheet.getSprite(112, 0, 14, 15);
+		weapon[1] = Game.spritesheet.getSprite(128, 0, 14, 15);
 
 		for(int i = 0; i < backPlayer.length; i++) {
 			
@@ -116,6 +126,7 @@ public class Player extends Entity	{
 		
 		checkCollisionLifePack();
 		checkCollisionAmmo();
+		checkCollisionGun();
 		
 		// animação para piscar quando der dano.
 		if (IsDamaged) {
@@ -128,6 +139,7 @@ public class Player extends Entity	{
 			
 		}
 		
+		// Reiniciar o jogo quando acabar a vida.
 		if (life <= 0) {
 			
 			Game.entities = new ArrayList<Entity>();
@@ -148,6 +160,25 @@ public class Player extends Entity	{
 		
 	}
 	
+	// Colisão na munição
+	public void checkCollisionGun() {
+		
+		for (int i = 0; i < Game.entities.size(); i++) {
+			
+			Entity objetoAtual = Game.entities.get(i);
+			
+			if (objetoAtual instanceof Weapon) {
+				
+				if (Entity.isColliding(this, objetoAtual)) {
+					hasGun = true;
+					Game.entities.remove(i);
+					return;
+				}
+			}
+		}
+	}	
+	
+	// Colisão na munição
 	public void checkCollisionAmmo() {
 		
 		for (int i = 0; i < Game.entities.size(); i++) {
@@ -163,12 +194,10 @@ public class Player extends Entity	{
 					return;
 				}
 			}
-			
 		}
-				
-		
 	}
 	
+	// Colisão no lifepack
 	public void checkCollisionLifePack() {
 		
 		for (int i = 0; i < Game.entities.size(); i++) {
@@ -183,10 +212,8 @@ public class Player extends Entity	{
 					Game.entities.remove(i);
 					return;
 				}
-			}
-			
+			}	
 		}
-		
 	}
 	
 	public void render(Graphics graficos) {
@@ -198,8 +225,18 @@ public class Player extends Entity	{
 			
 			if (right) {
 				graficos.drawImage(rightPlayer[index], posicaoX, posicaoY, null);
+				
+				if (hasGun) {
+					graficos.drawImage(Entity.GUN_RIGHT, posicaoX, posicaoY + 2, null);
+				}
+				
 			} else  if (left) {
 				graficos.drawImage(leftPlayer[index], posicaoX, posicaoY, null);
+				
+				if (hasGun) {
+					graficos.drawImage(Entity.GUN_LEFT, posicaoX, posicaoY + 2, null);
+				}				
+				
 			} else {
 				graficos.drawImage(frontPlayer[0], posicaoX, posicaoY, null);
 			}
