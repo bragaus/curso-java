@@ -35,6 +35,8 @@ public class Player extends Entity	{
 	
 	private int damageFrames = 0;
 	
+	public boolean shoot = false;
+	
 	public double life = 100, maxLife = 100;
 	
 	private boolean isBackPlayer; // Auxiliar para validar se o player parou de costas.
@@ -137,6 +139,10 @@ public class Player extends Entity	{
 				IsDamaged = false;
 			}
 			
+		}
+		
+		if (shoot) {
+			shoot = false;
 		}
 		
 		// Reiniciar o jogo quando acabar a vida.

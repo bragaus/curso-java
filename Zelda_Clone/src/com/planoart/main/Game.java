@@ -18,6 +18,7 @@ import javax.swing.JFrame;
 import com.planoart.entities.Enemy;
 import com.planoart.entities.Entity;
 import com.planoart.entities.Player;
+import com.planoart.entities.Shoot;
 import com.planoart.graficos.Spritesheet;
 import com.planoart.graficos.UserInterface;
 import com.planoart.world.World;
@@ -37,6 +38,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
 	
 	public static List<Entity> entities;
 	public static List<Enemy> enemies;
+	public static List<Shoot> shoots;
 	public static Spritesheet spritesheet;
 	
 	public static World world;
@@ -61,6 +63,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
 		camada = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB);
 		entities = new ArrayList<Entity>();
 		enemies = new ArrayList<Enemy>();
+		shoots = new ArrayList<Shoot>();
 		
 		spritesheet = new Spritesheet("/Spritesheet.png");
 		player = new Player(0,0,16,16,spritesheet.getSprite(32, 0, 15, 15));
@@ -101,9 +104,13 @@ public class Game extends Canvas implements Runnable, KeyListener {
 	
 	public void update() {
 		
-		for(int i = 0; i < entities.size(); i++) {
+		for (int i = 0; i < entities.size(); i++) {
 			Entity entity = entities.get(i);
 			entity.update();
+		}
+		
+		for (int i = 0; i < shoots.size(); i++) {
+			shoots.get(i).update();
 		}
 	
 	}
@@ -127,6 +134,10 @@ public class Game extends Canvas implements Runnable, KeyListener {
 		for(int i = 0; i < entities.size(); i++) {
 			Entity entity = entities.get(i);
 			entity.render(graficos);
+		}
+		
+		for (int i = 0; i < shoots.size(); i++) {
+			shoots.get(i).update();
 		}		
 		
 		userInterface.render(graficos);
@@ -208,6 +219,10 @@ public class Game extends Canvas implements Runnable, KeyListener {
 			player.up = true;
 		} else if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {
 			player.down = true;
+		}
+		
+		if (e.getKeyCode() == KeyEvent.VK_X) {
+			player.shoot = true;
 		}
 				
 	}
