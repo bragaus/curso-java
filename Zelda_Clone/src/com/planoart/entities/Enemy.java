@@ -18,6 +18,9 @@ public class Enemy extends Entity {
 	
 	private int life = 10;
 	
+	private boolean isDamaged = false;
+	private int damageFrames = 10, damageCurrent = 0;
+	
 	private BufferedImage[] enemyAnimated;
 
 	public Enemy(int x, int y, int width, int height, BufferedImage sprite) {
@@ -74,13 +77,20 @@ public class Enemy extends Entity {
 				y -= speed;
 				
 			}
-			
 	
 			frames ++;
 			if (frames == maxFrames) {
 				frames = 0;
 				index++;
 				if (index == maxIndex) index = 0;
+			}
+			
+			if (isDamaged) {
+				this.damageCurrent++;
+				if (this.damageFrames == damageCurrent) {
+					this.damageCurrent = 0;
+					this.isDamaged  = false;
+				}
 			}
 			
 		} else {
@@ -116,7 +126,7 @@ public class Enemy extends Entity {
 			if (e instanceof Shoot) {
 				
 				if (Entity.isColliding(this, e)) {
-			
+					isDamaged = true;
 					life--;
 					Game.shoots.remove(i);
 					return;
@@ -150,11 +160,16 @@ public class Enemy extends Entity {
 		int posicaoX = this.getX() - Camera.x;
 		int posicaoY = this.getY() - Camera.y;		
 		
-		if (isCollidingWithPlayer()) {
-			graficos.drawImage(enemyAnimated[0], posicaoX, posicaoY, null);
+		if (!isDamaged) {
+			if (isCollidingWithPlayer()) {
+				graficos.drawImage(enemyAnimated[0], posicaoX, posicaoY, null);
+			} else {
+				graficos.drawImage(enemyAnimated[index], posicaoX, posicaoY, null);
+			}			
 		} else {
-			graficos.drawImage(enemyAnimated[index], posicaoX, posicaoY, null);
+			graficos.drawImage(Entity.ENEMY_FEEDBACK, posicaoX, posicaoY, null);
 		}
+
 		
 		//super.render(graficos);
 		//graficos.setColor(Color.blue);
