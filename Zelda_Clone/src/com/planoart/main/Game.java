@@ -7,6 +7,8 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -21,9 +23,10 @@ import com.planoart.entities.Player;
 import com.planoart.entities.Shoot;
 import com.planoart.graficos.Spritesheet;
 import com.planoart.graficos.UserInterface;
+import com.planoart.world.Camera;
 import com.planoart.world.World;
 
-public class Game extends Canvas implements Runnable, KeyListener {
+public class Game extends Canvas implements Runnable, KeyListener, MouseListener {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -54,6 +57,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
 		rand = new Random();
 		
 		addKeyListener(this);
+		addMouseListener(this);
 
 		setPreferredSize(new Dimension(WIDTH*SCALE,HEIGHT*SCALE));
 		iniciarFrame();
@@ -137,7 +141,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
 		}
 		
 		for (int i = 0; i < shoots.size(); i++) {
-			shoots.get(i).update();
+			shoots.get(i).render(graficos);
 		}		
 		
 		userInterface.render(graficos);
@@ -162,8 +166,6 @@ public class Game extends Canvas implements Runnable, KeyListener {
 		graficos.setFont(new Font("Arial", Font.BOLD, 20));
 		graficos.setColor(Color.white);
 		graficos.drawString("SIT", 19, 19);
-		
-	
 		
 		graficos = bs.getDrawGraphics();
 		graficos.drawImage(camada, 0, 0, WIDTH*SCALE, HEIGHT*SCALE, null); // renderizando imagem na tela.			
@@ -204,6 +206,8 @@ public class Game extends Canvas implements Runnable, KeyListener {
 		
 		stop();
 	}
+	
+	// Evento do teclado:
 
 	public void keyPressed(KeyEvent e) {
 		
@@ -219,7 +223,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
 			player.up = true;
 		} else if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {
 			player.down = true;
-		}
+		}		
 		
 		if (e.getKeyCode() == KeyEvent.VK_X) {
 			player.shoot = true;
@@ -244,8 +248,43 @@ public class Game extends Canvas implements Runnable, KeyListener {
 		}
 		
 	}
+	
+	// Eventos do mouse:
 
 	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		player.shootByMouse = true;
+		
+		// divido por 3 porcausa do scale
+		player.posicaoMouseX = (e.getX() / 3); 
+		player.posicaoMousey = (e.getY() / 3);
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent arg0) {
 		// TODO Auto-generated method stub
 		
 	}

@@ -35,9 +35,10 @@ public class Player extends Entity	{
 	
 	private int damageFrames = 0;
 	
-	public boolean shoot = false;
+	public boolean shoot = false, shootByMouse = false;
 	
 	public double life = 100, maxLife = 100;
+	public int posicaoMouseX, posicaoMousey;
 	
 	private boolean isBackPlayer; // Auxiliar para validar se o player parou de costas.
 
@@ -141,9 +142,69 @@ public class Player extends Entity	{
 			
 		}
 		
+		// Sistema para atirar com o teclado (X)
 		if (shoot) {
+			
 			shoot = false;
+			
+			if (hasGun && ammo > 0) {
+				ammo--;
+				
+				int direcaoX = 0;
+				
+				if (right) {
+					direcaoX = 1;
+				} else {
+					direcaoX = -1;
+				}
+				
+				Shoot shoot = new Shoot(this.getX(), this.getY() + 7 , 3, 3, null, direcaoX, 0);
+				Game.shoots.add(shoot);				
+			}
+
 		}
+		
+		if (shootByMouse) {
+			
+			shootByMouse = false;
+			
+//			if (hasGun && ammo > 0) {
+//				ammo--;
+				
+				int posicaoX = 0, posicaoY = 8;
+				double angulo = 0;
+				
+				if (right) {
+					
+					posicaoX = 18;				
+					
+					// Calcular o angulo do tiro (usado em jogos fps)
+					angulo = Math.atan2(
+						posicaoMousey - (this.getY() + posicaoY - Camera.y), 
+						posicaoMouseX - (this.getX() + posicaoX - Camera.x)
+					);					
+					
+				} else {
+					
+					posicaoX = -8;				
+					
+					// Calcular o angulo do tiro (usado em jogos fps)
+					angulo = Math.atan2(
+						posicaoMousey - (this.getY() + posicaoY - Camera.y), 
+						posicaoMouseX - (this.getX() + posicaoX - Camera.x)
+					);
+					
+				}
+				
+				double direcaoX = Math.cos(angulo);
+				double direcaoY = Math.sin(angulo);				
+				
+				Shoot shoot = new Shoot(this.getX() + posicaoX, this.getY() + posicaoY , 3, 3, null, direcaoX, direcaoY);
+				Game.shoots.add(shoot);
+				
+//			}
+
+		}		
 		
 		// Reiniciar o jogo quando acabar a vida.
 		if (life <= 0) {

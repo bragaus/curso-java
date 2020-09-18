@@ -19,8 +19,8 @@ public class Entity {
 	
 	protected double x;
 	protected double y;
-	private int width;
-	private int height;
+	protected int width;
+	protected int height;
 	
 	private int maskx, masky, minwidth, minheight;
 	
