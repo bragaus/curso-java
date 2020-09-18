@@ -1,6 +1,6 @@
 package com.planoart.entities;
 
-import java.awt.Color;
+//import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -15,6 +15,8 @@ public class Enemy extends Entity {
 	private int maskx = 1, masky = 3, maskw = 10, maskh = 10;
 	
 	private int frames = 0, maxFrames = 5, index = 0, maxIndex = 3;
+	
+	private int life = 10;
 	
 	private BufferedImage[] enemyAnimated;
 
@@ -32,6 +34,13 @@ public class Enemy extends Entity {
 	public void update() {
 		
 		//if (Game.rand.nextInt(100) < 50) { // movimento randomico do inimigo.
+		
+		isCollidingWithBullet();
+		
+		if (life <= 0) {
+			destroySelf();
+			return;
+		}		
 		
 		if (isCollidingWithPlayer() == false) {
 			
@@ -81,16 +90,14 @@ public class Enemy extends Entity {
 				Game.player.life -= Game.rand.nextInt(3);
 				Player.IsDamaged = true;
 				
-				System.out.println("Vida: " + Game.player.life);
-				
-				//if (Game.player.life <= 0) {
-					//System.exit(1);
-				//}
-				
 			}
 
 		}
 		
+	}
+	
+	public void destroySelf() {
+		Game.entities.remove(this);
 	}
 	
 	public boolean isCollidingWithPlayer() {
@@ -99,6 +106,23 @@ public class Enemy extends Entity {
 		Rectangle player = new Rectangle(Game.player.getX(), Game.player.getY(), 16, 16);
 		
 		return enemyCurrent.intersects(player);
+	}
+	
+	public void isCollidingWithBullet() {
+		
+		for (int i = 0; i < Game.shoots.size(); i++) {
+			
+			Entity e = Game.shoots.get(i);
+			if (e instanceof Shoot) {
+				
+				if (Entity.isColliding(this, e)) {
+			
+					life--;
+					Game.shoots.remove(i);
+					return;
+				}
+			}
+		}
 	}
 	
 	public boolean isColliding(int xnext, int ynext) {

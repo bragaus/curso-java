@@ -23,7 +23,7 @@ import com.planoart.entities.Player;
 import com.planoart.entities.Shoot;
 import com.planoart.graficos.Spritesheet;
 import com.planoart.graficos.UserInterface;
-import com.planoart.world.Camera;
+//import com.planoart.world.Camera;
 import com.planoart.world.World;
 
 public class Game extends Canvas implements Runnable, KeyListener, MouseListener {
