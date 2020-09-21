@@ -168,8 +168,8 @@ public class Player extends Entity	{
 			
 			shootByMouse = false;
 			
-//			if (hasGun && ammo > 0) {
-//				ammo--;
+			if (hasGun && ammo > 0) {
+				ammo--;
 				
 				int posicaoX = 0, posicaoY = 8;
 				double angulo = 0;
@@ -202,22 +202,14 @@ public class Player extends Entity	{
 				Shoot shoot = new Shoot(this.getX() + posicaoX, this.getY() + posicaoY , 3, 3, null, direcaoX, direcaoY);
 				Game.shoots.add(shoot);
 				
-//			}
+			}
 
 		}		
 		
 		// Reiniciar o jogo quando acabar a vida.
 		if (life <= 0) {
 			
-			Game.entities = new ArrayList<Entity>();
-			Game.enemies = new ArrayList<Enemy>();
-			
-			Game.spritesheet = new Spritesheet("/Spritesheet.png");
-			Game.player = new Player(0,0,16,16,Game.spritesheet.getSprite(32, 0, 15, 15));
-			Game.entities.add(Game.player);
-			Game.world = new World("/map.png");
-			
-			return;
+
 			
 		}
 		
@@ -255,7 +247,7 @@ public class Player extends Entity	{
 			if (objetoAtual instanceof Bullet) {
 				
 				if (Entity.isColliding(this, objetoAtual)) {
-					ammo++;
+					ammo+=10;
 					Game.entities.remove(i);
 					// System.out.println("Munição atual: " + ammo);
 					return;

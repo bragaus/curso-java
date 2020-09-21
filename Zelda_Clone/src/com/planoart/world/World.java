@@ -3,6 +3,7 @@ package com.planoart.world;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
@@ -10,7 +11,9 @@ import com.planoart.entities.Bullet;
 import com.planoart.entities.Enemy;
 import com.planoart.entities.Entity;
 import com.planoart.entities.Lifepack;
+import com.planoart.entities.Player;
 import com.planoart.entities.Weapon;
+import com.planoart.graficos.Spritesheet;
 import com.planoart.main.Game;
 
 public class World {
@@ -88,6 +91,20 @@ public class World {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public static void restartGame(String level) {
+		
+		Game.entities = new ArrayList<Entity>();
+		Game.enemies = new ArrayList<Enemy>();
+		
+		Game.spritesheet = new Spritesheet("/Spritesheet.png");
+		Game.player = new Player(0,0,16,16,Game.spritesheet.getSprite(32, 0, 15, 15));
+		Game.entities.add(Game.player);
+		Game.world = new World("/"+level);
+		
+		return;		
+		
 	}
 	
 	// Sistema de colisão
