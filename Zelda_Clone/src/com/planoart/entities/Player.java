@@ -209,7 +209,7 @@ public class Player extends Entity	{
 		// Reiniciar o jogo quando acabar a vida.
 		if (life <= 0) {
 			
-
+			Game.estadoDoJogo = "GAME_OVER";
 			
 		}
 		

@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -53,6 +54,8 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	public static Random rand;
 	
 	public UserInterface userInterface;
+	
+	public static String estadoDoJogo = "GAME_OVER";
 	
 	public Game() {
 		
@@ -110,24 +113,32 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	
 	public void update() {
 		
-		for (int i = 0; i < entities.size(); i++) {
-			Entity entity = entities.get(i);
-			entity.update();
-		}
-		
-		for (int i = 0; i < shoots.size(); i++) {
-			shoots.get(i).update();
-		}
-		
-		if (enemies.size() == 0) {
-			LEVEL_ATUAL++;
+		if (estadoDoJogo == "NORMAL") {
 			
-			if (LEVEL_ATUAL > MAX_LEVEL) {
-				LEVEL_ATUAL = 1;
+			for (int i = 0; i < entities.size(); i++) {
+				Entity entity = entities.get(i);
+				entity.update();
 			}
 			
-			String newWorld = "level"+LEVEL_ATUAL+".png";
-			World.restartGame(newWorld);			
+			for (int i = 0; i < shoots.size(); i++) {
+				shoots.get(i).update();
+			}
+			
+			if (enemies.size() == 0) {
+				LEVEL_ATUAL++;
+				
+				if (LEVEL_ATUAL > MAX_LEVEL) {
+					LEVEL_ATUAL = 1;
+				}
+				
+				String newWorld = "level"+LEVEL_ATUAL+".png";
+				World.restartGame(newWorld);			
+			}			
+			
+		} else if (estadoDoJogo == "GAME_OVER") {
+			
+			System.out.println("Game over");
+			
 		}
 	
 	}
@@ -181,7 +192,28 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		graficos.drawString("SIT", 19, 19);
 		
 		graficos = bs.getDrawGraphics();
-		graficos.drawImage(camada, 0, 0, WIDTH*SCALE, HEIGHT*SCALE, null); // renderizando imagem na tela.			
+		graficos.drawImage(camada, 0, 0, WIDTH*SCALE, HEIGHT*SCALE, null); // renderizando imagem na tela.		
+		
+		if (estadoDoJogo == "GAME_OVER") {
+			
+			Graphics2D graficos2D = (Graphics2D) graficos;
+			graficos2D.setColor(new Color(0,0,0,100));
+			graficos2D.fillRect(0, 0, WIDTH*SCALE, HEIGHT*SCALE);
+			
+			graficos.setFont(new Font("arial", Font.BOLD, 100));
+			graficos.setColor(Color.white);
+			
+			// Procurar função para calcular exatamente o centro da tela
+			graficos.drawString("DEU MOLE", 110, 290);
+			
+			graficos.setFont(new Font("arial", Font.BOLD, 20));
+			graficos.setColor(Color.white);
+			
+			// Procurar função para calcular exatamente o centro da tela
+			graficos.drawString("Pressione enter", 300, 320);			
+			
+		}
+		
 		bs.show();
 
 	}
@@ -224,24 +256,28 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 
 	public void keyPressed(KeyEvent e) {
 		
-		// Seta direita ou D pressionado.
-		if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D) {
-			player.right = true;
-		} else if (e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A) {
-			player.left = true;
+		if (estadoDoJogo == "NORMAL") {
+		
+			// Seta direita ou D pressionado.
+			if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D) {
+				player.right = true;
+			} else if (e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A) {
+				player.left = true;
+			}
+			
+			// Seta baixo ou S pressionado.
+			if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W) {
+				player.up = true;
+			} else if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {
+				player.down = true;
+			}		
+			
+			if (e.getKeyCode() == KeyEvent.VK_X) {
+				player.shoot = true;
+			}			
+			
 		}
 		
-		// Seta baixo ou S pressionado.
-		if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W) {
-			player.up = true;
-		} else if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {
-			player.down = true;
-		}		
-		
-		if (e.getKeyCode() == KeyEvent.VK_X) {
-			player.shoot = true;
-		}
-				
 	}
 
 	public void keyReleased(KeyEvent e) {
@@ -289,11 +325,17 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		player.shootByMouse = true;
 		
-		// divido por 3 porcausa do scale
-		player.posicaoMouseX = (e.getX() / 3); 
-		player.posicaoMousey = (e.getY() / 3);
+		if (estadoDoJogo == "NORMAL") {
+			
+			player.shootByMouse = true;
+			
+			// divido por 3 porcausa do scale
+			player.posicaoMouseX = (e.getX() / 3); 
+			player.posicaoMousey = (e.getY() / 3);			
+			
+		}
+		
 	}
 
 	@Override
