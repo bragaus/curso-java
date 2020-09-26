@@ -37,7 +37,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	public static JFrame frame;
 	public static final int WIDTH = 240;
 	public static final int HEIGHT = 160;
-	private final int SCALE = 3;
+	public static final int SCALE = 3;
 	private int LEVEL_ATUAL = 1, MAX_LEVEL = 2;
 	
 	private BufferedImage camada;
@@ -55,9 +55,11 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	
 	public UserInterface userInterface;
 	
-	public static String estadoDoJogo = "NORMAL";
+	public static String estadoDoJogo = "MENU";
 	private boolean mostrarMensagemGameOver = true, reiniciarJogo = false;
 	private int mostrarMensagemGameOverFrames = 0, mostrarMensagemGameOverMaxFrames = 50;
+	
+	public Menu menu;
 	
 	public Game() {
 		
@@ -81,6 +83,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		entities.add(player);
 		world = new World("/level1.png");
 		
+		menu = new Menu();
 	}
 	
 	public void iniciarFrame() {
@@ -156,15 +159,17 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 				
 			}
 			
+		} else if (estadoDoJogo == "MENU") {
+			menu.update();
 		}
 	
 	}
 	
 	public void render() {
 		
-		BufferStrategy bs = this.getBufferStrategy();
+		BufferStrategy bs = getBufferStrategy();
 		if (bs == null) {
-			this.createBufferStrategy(3); // sequência de buffers para otimizar a renderização.
+			createBufferStrategy(3); // sequência de buffers para otimizar a renderização.
 			return;
 		}
 		
@@ -229,8 +234,12 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 			// Procurar função para calcular exatamente o centro da tela
 			if (mostrarMensagemGameOver) graficos.drawString("Pressione enter", 300, 320);			
 			
+		} else if (estadoDoJogo == "MENU") {
+			
+			menu.render(graficos);
+			
 		}
-		
+ 		
 		bs.show();
 
 	}
@@ -295,6 +304,21 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 			
 		}
 		
+		if (estadoDoJogo == "MENU") {
+			
+			if (e.getKeyCode() == KeyEvent.VK_UP) {
+				
+				menu.up = true;
+				
+			} else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+				
+				menu.down = true;
+				
+			}
+			
+			
+		}
+		
 		if (estadoDoJogo == "GAME_OVER" && e.getKeyCode() == KeyEvent.VK_ENTER) {
 		
 			reiniciarJogo = true;
@@ -330,29 +354,25 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	// Eventos do mouse:
 
 	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
+
 		
 	}
 
-	@Override
 	public void mouseClicked(MouseEvent arg0) {
-		// TODO Auto-generated method stub
+
 		
 	}
 
-	@Override
 	public void mouseEntered(MouseEvent arg0) {
-		// TODO Auto-generated method stub
+
 		
 	}
 
-	@Override
 	public void mouseExited(MouseEvent arg0) {
-		// TODO Auto-generated method stub
+
 		
 	}
 
-	@Override
 	public void mousePressed(MouseEvent e) {
 		
 		if (estadoDoJogo == "NORMAL") {
@@ -367,9 +387,9 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		
 	}
 
-	@Override
+
 	public void mouseReleased(MouseEvent arg0) {
-		// TODO Auto-generated method stub
+
 		
 	}
 	
