@@ -23,8 +23,13 @@ public class Player extends Entity	{
 	private BufferedImage[] backPlayer;
 	private BufferedImage[] frontPlayer;
 	
+	private BufferedImage playerDeFrenteArmado;
+	
 	// Player com dano
 	private BufferedImage playerDamage; 
+	
+	// Player com dano armado
+	private BufferedImage playerComDanoArmado;
 	
 	private BufferedImage[] weapon;
 	
@@ -51,7 +56,11 @@ public class Player extends Entity	{
 		frontPlayer = new BufferedImage[1];
 		weapon = new BufferedImage[2];
 		
+		playerDeFrenteArmado = Game.spritesheet.getSprite(50, 30, 10, 15);
+		
 		playerDamage = Game.spritesheet.getSprite(0, 30, 14, 15);
+		
+		playerComDanoArmado = Game.spritesheet.getSprite(17, 30, 14, 14);
 		
 		weapon[0] = Game.spritesheet.getSprite(112, 0, 14, 15);
 		weapon[1] = Game.spritesheet.getSprite(128, 0, 14, 15);
@@ -134,9 +143,9 @@ public class Player extends Entity	{
 		// animação para piscar quando der dano.
 		if (IsDamaged) {
 			
-			this.damageFrames++;
-			if (this.damageFrames == 8) {
-				this.damageFrames = 0;
+			damageFrames++;
+			if (damageFrames == 8) {
+				damageFrames = 0;
 				IsDamaged = false;
 			}
 			
@@ -283,37 +292,51 @@ public class Player extends Entity	{
 		
 		if (!IsDamaged) {
 			
-			if (right) {
+			if (right && !up) {
 				graficos.drawImage(rightPlayer[index], posicaoX, posicaoY, null);
 				
 				if (hasGun) {
 					graficos.drawImage(Entity.GUN_RIGHT, posicaoX, posicaoY + 2, null);
 				}
 				
-			} else  if (left) {
+			} else  if (left && !up) {
 				graficos.drawImage(leftPlayer[index], posicaoX, posicaoY, null);
 				
 				if (hasGun) {
 					graficos.drawImage(Entity.GUN_LEFT, posicaoX, posicaoY + 2, null);
 				}				
 				
-			} else {
-				graficos.drawImage(frontPlayer[0], posicaoX, posicaoY, null);
+			} else if (!right && !left && !up &&!down) {
+				
+				if (hasGun) {
+					graficos.drawImage(playerDeFrenteArmado, posicaoX, posicaoY, null);
+				} else {
+					graficos.drawImage(frontPlayer[0], posicaoX, posicaoY, null);
+				}
+
 			}
 
-			if (up) {
+			if (up && (!left || !right)) {
 				graficos.drawImage(backPlayer[0], posicaoX, posicaoY, null);
 			} else if (isBackPlayer) {
 				graficos.drawImage(backPlayer[0], posicaoX, posicaoY, null);
 			}
 			
-			if (down) {
-				graficos.drawImage(frontPlayer[0], posicaoX, posicaoY, null);
+			if (down && !left && !right) {
+				if (hasGun) {
+					graficos.drawImage(playerDeFrenteArmado, posicaoX, posicaoY, null);
+				} else {
+					graficos.drawImage(frontPlayer[0], posicaoX, posicaoY, null);
+				}
 			}			
 			
 		} else {
 			
-			graficos.drawImage(playerDamage, posicaoX, posicaoY, null);
+			if (hasGun) {
+				graficos.drawImage(playerComDanoArmado, posicaoX, posicaoY, null);
+			} else {
+				graficos.drawImage(playerDamage, posicaoX, posicaoY, null);
+			}
 			
 		}
 		
