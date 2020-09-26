@@ -93,7 +93,7 @@ public class World {
 		}
 	}
 	
-	public static void restartGame(String level) {
+	public static void reiniciarJogo(String level) {
 		
 		Game.entities = new ArrayList<Entity>();
 		Game.enemies = new ArrayList<Enemy>();

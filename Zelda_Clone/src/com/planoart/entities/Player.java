@@ -37,7 +37,7 @@ public class Player extends Entity	{
 	
 	public boolean shoot = false, shootByMouse = false;
 	
-	public double life = 100, maxLife = 100;
+	public double life = 5, maxLife = 100;
 	public int posicaoMouseX, posicaoMousey;
 	
 	private boolean isBackPlayer; // Auxiliar para validar se o player parou de costas.
@@ -209,6 +209,7 @@ public class Player extends Entity	{
 		// Reiniciar o jogo quando acabar a vida.
 		if (life <= 0) {
 			
+			life = 0;
 			Game.estadoDoJogo = "GAME_OVER";
 			
 		}

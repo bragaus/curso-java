@@ -55,7 +55,9 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	
 	public UserInterface userInterface;
 	
-	public static String estadoDoJogo = "GAME_OVER";
+	public static String estadoDoJogo = "NORMAL";
+	private boolean mostrarMensagemGameOver = true, reiniciarJogo = false;
+	private int mostrarMensagemGameOverFrames = 0, mostrarMensagemGameOverMaxFrames = 50;
 	
 	public Game() {
 		
@@ -132,12 +134,27 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 				}
 				
 				String newWorld = "level"+LEVEL_ATUAL+".png";
-				World.restartGame(newWorld);			
+				World.reiniciarJogo(newWorld);			
 			}			
 			
 		} else if (estadoDoJogo == "GAME_OVER") {
 			
-			System.out.println("Game over");
+			mostrarMensagemGameOverFrames++;
+			
+			if (mostrarMensagemGameOverFrames == mostrarMensagemGameOverMaxFrames) {
+				mostrarMensagemGameOverFrames = 0;
+
+				mostrarMensagemGameOver = !mostrarMensagemGameOver;
+			}
+			
+			if (reiniciarJogo) {
+				
+				LEVEL_ATUAL = 1;
+				String newWorld = "level"+LEVEL_ATUAL+".png";
+				estadoDoJogo = "NORMAL";
+				World.reiniciarJogo(newWorld);	
+				
+			}
 			
 		}
 	
@@ -210,7 +227,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 			graficos.setColor(Color.white);
 			
 			// Procurar função para calcular exatamente o centro da tela
-			graficos.drawString("Pressione enter", 300, 320);			
+			if (mostrarMensagemGameOver) graficos.drawString("Pressione enter", 300, 320);			
 			
 		}
 		
@@ -278,6 +295,12 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 			
 		}
 		
+		if (estadoDoJogo == "GAME_OVER" && e.getKeyCode() == KeyEvent.VK_ENTER) {
+		
+			reiniciarJogo = true;
+			
+		}
+		
 	}
 
 	public void keyReleased(KeyEvent e) {
@@ -295,6 +318,12 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		} else if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {
 			player.down = false;
 		}
+		
+		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+			
+			reiniciarJogo = false;
+			
+		}		
 		
 	}
 	
