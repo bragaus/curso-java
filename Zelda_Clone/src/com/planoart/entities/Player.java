@@ -223,9 +223,15 @@ public class Player extends Entity	{
 			
 		}
 		
+		fazerCameraSeguirPlayer();
+		
+	}
+	
+	public void fazerCameraSeguirPlayer() {
+		
 		// travar a camera no limite do mapa.
 		Camera.x = Camera.clamp(this.getX() - (Game.WIDTH/2), 0, World.WIDTH*16 - Game.WIDTH);
-		Camera.y = Camera.clamp(this.getY() - (Game.HEIGHT/2), 0, World.HEIGHT*16 - Game.HEIGHT);
+		Camera.y = Camera.clamp(this.getY() - (Game.HEIGHT/2), 0, World.HEIGHT*16 - Game.HEIGHT);		
 		
 	}
 	
