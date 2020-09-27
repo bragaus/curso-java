@@ -300,9 +300,14 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 			
 			if (e.getKeyCode() == KeyEvent.VK_X) {
 				player.shoot = true;
-			}			
+			}
 			
 		}
+		
+		if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+			estadoDoJogo = "MENU";
+			menu.pause = true;
+		}		
 		
 		if (estadoDoJogo == "MENU") {
 			
@@ -325,6 +330,12 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 			
 		}
 		
+		if (estadoDoJogo == "MENU" && e.getKeyCode() == KeyEvent.VK_ENTER) {
+			
+			menu.enter = true;
+			
+		}
+		
 	}
 
 	public void keyReleased(KeyEvent e) {
@@ -344,10 +355,9 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		}
 		
 		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-			
 			reiniciarJogo = false;
-			
-		}		
+			menu.enter = false;
+		}
 		
 	}
 	

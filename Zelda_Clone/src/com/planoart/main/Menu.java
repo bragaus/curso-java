@@ -11,8 +11,10 @@ public class Menu {
 	public int opcaoAtual = 0;
 	public int opcaoMaxima = opcoes.length - 1;
 	
-	public boolean up, down;
+	public boolean up, down, enter;
 
+	public boolean pause = false;
+	
 	public void update() {
 		
 		if (up) {
@@ -33,6 +35,23 @@ public class Menu {
 			}
 		}
 		
+		if (enter) {
+			
+			switch (opcoes[opcaoAtual]) {
+			
+			case "novo jogo": case "continuar": Game.estadoDoJogo = "NORMAL";
+				break;
+			
+			case "carregar jogo": 
+				break;
+				
+			case "sair": System.exit(1);
+				break;
+			
+			}			
+			
+		}
+		
 	}
 	
 	public void render(Graphics graficos) {
@@ -48,7 +67,11 @@ public class Menu {
 		graficos.setFont(new Font("arial", Font.BOLD, 20));
 		graficos.setColor(Color.white);
 		
-		graficos.drawString("novo jogo", 300, 200);
+		if (pause == false) {
+			graficos.drawString("novo jogo", 300, 200);
+		} else {
+			graficos.drawString("resumir", 300, 200);
+		}
 
 		graficos.drawString("carregar jogo", 300, 220);
 
@@ -56,17 +79,17 @@ public class Menu {
 		
 		switch (opcoes[opcaoAtual]) {
 		
-		case "novo jogo": graficos.drawString(">", 280, 200);
-			break;
-		
-		case "carregar jogo": graficos.drawString(">", 280, 220);
-			break;
+			case "novo jogo": graficos.drawString(">", 280, 200);
+				break;
 			
-		case "sair": graficos.drawString(">", 280, 240);
-			break;
+			case "carregar jogo": graficos.drawString(">", 280, 220);
+				break;
+				
+			case "sair": graficos.drawString(">", 280, 240);
+				break;
 			
-		default: graficos.drawString(">", 280, 200);
-		
+			default: graficos.drawString(">", 280, 200);
+			
 		}
 		
 		
