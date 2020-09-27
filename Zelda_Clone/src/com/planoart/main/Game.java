@@ -279,65 +279,83 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	}
 	
 	// Evento do teclado:
-
-	public void keyPressed(KeyEvent e) {
+	
+	public void controlesDoPlayer(KeyEvent e) {
 		
-		if (estadoDoJogo == "NORMAL") {
+		// Seta direita ou D pressionado.
+		if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D) {
+			player.right = true;
+		} else if (e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A) {
+			player.left = true;
+		}
 		
-			// Seta direita ou D pressionado.
-			if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D) {
-				player.right = true;
-			} else if (e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A) {
-				player.left = true;
-			}
-			
-			// Seta baixo ou S pressionado.
-			if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W) {
-				player.up = true;
-			} else if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {
-				player.down = true;
-			}		
-			
-			if (e.getKeyCode() == KeyEvent.VK_X) {
-				player.shoot = true;
-			}
-			
+		// Seta baixo ou S pressionado.
+		if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W) {
+			player.up = true;
+		} else if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {
+			player.down = true;
+		}		
+		
+		if (e.getKeyCode() == KeyEvent.VK_X) {
+			player.shoot = true;
 		}
 		
 		if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
 			estadoDoJogo = "MENU";
 			menu.pause = true;
-		}		
+		}			
 		
-		if (estadoDoJogo == "MENU") {
-			
-			if (e.getKeyCode() == KeyEvent.VK_UP) {
-				
-				menu.up = true;
-				
-			} else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-				
-				menu.down = true;
-				
-			}
-			
-			
-		}
+	}
+	
+	public void controlesDoMenu(KeyEvent e) {
 		
-		if (estadoDoJogo == "GAME_OVER" && e.getKeyCode() == KeyEvent.VK_ENTER) {
-		
-			reiniciarJogo = true;
+		if (e.getKeyCode() == KeyEvent.VK_UP) {
+			
+			menu.up = true;
+			
+		} else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+			
+			menu.down = true;
 			
 		}
 		
-		if (estadoDoJogo == "MENU" && e.getKeyCode() == KeyEvent.VK_ENTER) {
+		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 			
 			menu.enter = true;
+			
+		}		
+		
+	}
+	
+	public void controlesDoGameOver(KeyEvent e) {
+		
+		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+			
+			reiniciarJogo = true;
+			
+		}		
+		
+	}
+
+	// Quando pressionar a tecla
+	public void keyPressed(KeyEvent e) {
+		
+		switch (estadoDoJogo) {
+		
+		case "NORMAL": controlesDoPlayer(e);
+			break;
+			
+		case "MENU": controlesDoMenu(e);
+			break;
+			
+		case "GAME_OVER": controlesDoGameOver(e);
+			break;
 			
 		}
 		
 	}
 
+	// Quando soltar a tecla
 	public void keyReleased(KeyEvent e) {
 
 		// Seta direita ou D pressionado.
@@ -354,6 +372,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 			player.down = false;
 		}
 		
+		// Tecla Enter
 		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 			reiniciarJogo = false;
 			menu.enter = false;
